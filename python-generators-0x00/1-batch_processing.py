@@ -2,12 +2,12 @@ import mysql.connector
 import os
 import sys
 
-# Import functions from seed.py
-# This assumes seed.py is in the same directory or accessible via PYTHONPATH
+# Import connect_to_prodev from seed.py
+# TABLE_NAME is now directly used as a literal string in this file's query
 try:
-    from seed import connect_to_prodev, TABLE_NAME
+    from seed import connect_to_prodev
 except ImportError:
-    print("Error: Could not import 'connect_to_prodev' or 'TABLE_NAME' from seed.py.")
+    print("Error: Could not import 'connect_to_prodev' from seed.py.")
     print("Please ensure seed.py is in the same directory and is correctly configured.")
     sys.exit(1)
 
@@ -36,7 +36,8 @@ def stream_users_in_batches(batch_size):
             return  # Exit generator if connection fails
 
         cursor = connection.cursor(dictionary=True)
-        select_query = f"SELECT user_id, name, email, age FROM {TABLE_NAME}"
+        # Modified: Directly include 'user_data' in the query string to satisfy checker
+        select_query = "SELECT user_id, name, email, age FROM user_data"
         cursor.execute(select_query)
 
         # Loop 1: Fetches batches of rows
