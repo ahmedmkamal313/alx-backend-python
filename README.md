@@ -17,7 +17,8 @@ alx-backend-python/
 │
 ├── python-generators-0x00/           # MySQL data streaming & batching with generators
 ├── python-decorators-0x01/           # SQL decorators: logging, retries, caching, and connection handling
-│
+├── python-context-async-perations-0x02/
+|
 └── README.md                         # You're here
 ```
 ---
@@ -56,6 +57,23 @@ This project demonstrates how to enhance Python database code using **custom dec
 - ✅ `@cache_query`: Memory-efficient query result caching
 
 > 📘 Full Details: [`python-decorators-0x01/README.md`](./python-decorators-0x01/README.md)
+
+---
+
+#### 🔁 Highlight: Context Managers & Async Operations
+
+📁 [`python-context-async-operations-0x02`](./python-context-async-operations-0x02)
+
+This project focuses on building **custom context managers** for resource-safe SQLite operations and using **asynchronous Python** for concurrent database querying.
+
+### 🔍 Features
+- ✅ `with`-based automatic connection management
+- ✅ Reusable SQL execution context manager
+- ✅ Safe commit/rollback behavior
+- ✅ Async fetching of large datasets using `aiosqlite`
+- ✅ Parallel DB queries with `asyncio.gather()`
+
+> 📘 Full Details: [`python-context-async-operations-0x02/README.md`](./python-context-async-operations-0x02/README.md)
 
 ---
 ## 📚 Prerequisites
