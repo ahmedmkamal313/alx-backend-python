@@ -15,9 +15,10 @@ This repo serves as a **consolidated workspace** for exploring backend programmi
 ```bash
 alx-backend-python/
 │
-├── python-generators-0x00/
+├── python-generators-0x00/           # MySQL data streaming & batching with generators
+├── python-decorators-0x01/           # SQL decorators: logging, retries, caching, and connection handling
 │
-└── README.md                          # You're here
+└── README.md                         # You're here
 ```
 ---
 > ✅ Modular and scalable — each directory represents a fully self-contained backend project.
@@ -40,9 +41,27 @@ A project focused on using **Python generators** for efficient streaming of data
 > 📘 Full Details: [`python-generators-0x00/README.md`](./python-generators-0x00/README.md)
 
 ---
+
+## ⚙️ Highlight: Decorators Project
+
+📁 [`python-decorators-0x01`](./python-decorators-0x01)
+
+This project demonstrates how to enhance Python database code using **custom decorators** that wrap functionality like logging, connection management, retries, transactions, and caching.
+
+### 🔍 Features
+- ✅ `@log_queries`: Log SQL queries before execution
+- ✅ `@with_db_connection`: Automatically manage DB connections
+- ✅ `@transactional`: Auto-commit or rollback logic
+- ✅ `@retry_on_failure`: Retry failed operations gracefully
+- ✅ `@cache_query`: Memory-efficient query result caching
+
+> 📘 Full Details: [`python-decorators-0x01/README.md`](./python-decorators-0x01/README.md)
+
+---
 ## 📚 Prerequisites
 
 - Python 3.8+  
-- MySQL Server   
-- `mysql-connector-python`
+- MySQL Server (for Generators Project)  
+- SQLite (for Decorators Project)  
+- Required Python packages (see each project's README)
 
