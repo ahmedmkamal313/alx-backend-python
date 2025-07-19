@@ -128,8 +128,8 @@ class TestGithubOrgClient(unittest.TestCase):
         # Instantiate the client
         client = GithubOrgClient(org_name)
 
-        # Call the org method
-        result = client.org()
+        # Call the org property (not method)
+        result = client.org  # Corrected: Removed parentheses
 
         # Assert that get_json was called exactly once with the expected URL
         mock_get_json.assert_called_once_with(expected_url)
