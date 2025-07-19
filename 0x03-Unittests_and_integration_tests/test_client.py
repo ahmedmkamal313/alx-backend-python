@@ -228,7 +228,7 @@ class TestGithubOrgClient(unittest.TestCase):
         "apache2_repos": apache2_repos,
     }
 ])
-class TestIntegrationGithubOrgClient(parameterized.TestCase):
+class TestIntegrationGithubOrgClient(unittest.TestCase):
     """
     Performs integration tests for GithubOrgClient.public_repos.
     Mocks external requests using setUpClass and tearDownClass.
