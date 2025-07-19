@@ -138,6 +138,32 @@ class TestGithubOrgClient(unittest.TestCase):
         self.assertEqual(result, {
                          "login": org_name, "repos_url": f"https://api.github.com/orgs/{org_name}/repos"})
 
+    def test_public_repos_url(self) -> None:
+        """
+        Tests that GithubOrgClient._public_repos_url returns the expected URL
+        based on a mocked org property.
+        """
+        # Define a known payload that the mocked org property will return
+        test_payload = {"repos_url": "http://mocked-repos-url.com"}
+
+        # Use patch as a context manager to mock GithubOrgClient.org
+        # patch.object is used because 'org' is a property on the instance.
+        with patch.object(GithubOrgClient, 'org', new_callable=Mock) as mock_org:
+            # Configure the mocked 'org' property to return our test_payload
+            mock_org.return_value = test_payload
+
+            # Instantiate the client (org_name doesn't matter for this test as 'org' is mocked)
+            client = GithubOrgClient("test_org")
+
+            # Access the _public_repos_url property
+            result = client._public_repos_url
+
+            # Assert that the mocked 'org' property was accessed (called) exactly once
+            mock_org.assert_called_once()
+
+            # Assert that the result of _public_repos_url is the expected one
+            self.assertEqual(result, test_payload["repos_url"])
+
 
 if __name__ == '__main__':
     unittest.main()
