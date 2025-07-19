@@ -212,9 +212,8 @@ class TestGithubOrgClient(unittest.TestCase):
         ({"license": None}, "my_license", False),
         ({}, "my_license", False),  # Added test case for missing 'license'
     ])
-    def test_has_license(
-            self, repo: Dict[str, Dict],
-            license_key: str, expected_result: bool) -> None:
+    def test_has_license(self, repo: Dict[str, Dict],
+                         license_key: str, expected_result: bool) -> None:
         """
         Tests that GithubOrgClient.has_license returns the expected boolean
         value based on the provided repository dictionary and license key.
