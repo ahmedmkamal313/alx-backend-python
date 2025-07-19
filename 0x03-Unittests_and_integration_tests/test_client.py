@@ -13,6 +13,7 @@ from typing import (
     Mapping,
     Sequence,
 )
+import functools  # Added import for functools
 
 # Re-define utils functions here or ensure they are importable
 # For the purpose of this self-contained test file, let's include them
