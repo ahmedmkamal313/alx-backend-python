@@ -220,8 +220,6 @@ class TestGithubOrgClient(unittest.TestCase):
         """
         self.assertEqual(GithubOrgClient.has_license(
             repo, license_key), expected_result)
-
-
 @parameterized_class([
     {
         "org_payload": {
