@@ -3,7 +3,7 @@
 Unit tests for the client module.
 """
 import unittest
-from parameterized import parameterized, parameterized_class, TestCase
+from parameterized import parameterized, parameterized_class
 from unittest.mock import patch, Mock, PropertyMock
 from typing import (
     List,
@@ -228,7 +228,7 @@ class TestGithubOrgClient(unittest.TestCase):
         "apache2_repos": apache2_repos,
     }
 ])
-class TestIntegrationGithubOrgClient(TestCase):
+class TestIntegrationGithubOrgClient(parameterized.TestCase):
     """
     Performs integration tests for GithubOrgClient.public_repos.
     Mocks external requests using setUpClass and tearDownClass.
