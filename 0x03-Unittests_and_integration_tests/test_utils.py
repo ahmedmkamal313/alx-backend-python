@@ -20,7 +20,7 @@ class TestAccessNestedMap(unittest.TestCase):
     def test_access_nested_map(
             self, nested_map: dict, path: tuple, expected_result: any) -> None:
         """
-        Tests that access_nested_map 
+        Tests that access_nested_map
         returns the expected result for various inputs.
         """
         self.assertEqual(access_nested_map(nested_map, path), expected_result)
@@ -32,7 +32,7 @@ class TestAccessNestedMap(unittest.TestCase):
     def test_access_nested_map_exception(
             self, nested_map: dict, path: tuple, expected_key: str) -> None:
         """
-        Tests that access_nested_map raises a KeyError with the expected 
+        Tests that access_nested_map raises a KeyError with the expected
         message for invalid paths or non-mapping intermediate values.
         """
         with self.assertRaisesRegex(KeyError, f"'{expected_key}'"):
