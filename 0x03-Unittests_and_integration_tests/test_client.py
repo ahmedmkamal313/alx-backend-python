@@ -13,8 +13,8 @@ from typing import (
     Mapping,
     Sequence,
 )
-import functools  # Added import for functools
-
+import functools
+from fixtures import org_payload, repos_payload, expected_repos, apache2_repos
 
 def access_nested_map(nested_map: Mapping, path: Sequence) -> Any:
     """Access nested map with key path."""
@@ -222,17 +222,10 @@ class TestGithubOrgClient(unittest.TestCase):
             repo, license_key), expected_result)
 @parameterized_class([
     {
-        "org_payload": {
-            "login": "google",
-            "repos_url": "https://api.github.com/orgs/google/repos"
-        },
-        "repos_payload": [
-            {"name": "google-cloud-sdk", "license": {"key": "apache-2.0"}},
-            {"name": "angular", "license": {"key": "mit"}},
-            {"name": "some-other-repo", "license": None},
-        ],
-        "expected_repos": ["google-cloud-sdk", "angular", "some-other-repo"],
-        "apache2_repos": ["google-cloud-sdk"],
+        "org_payload": org_payload,
+        "repos_payload": repos_payload,
+        "expected_repos": expected_repos,
+        "apache2_repos": apache2_repos,
     }
 ])
 class TestIntegrationGithubOrgClient(unittest.TestCase):
