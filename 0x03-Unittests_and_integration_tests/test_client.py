@@ -3,7 +3,7 @@
 Unit tests for the client module.
 """
 import unittest
-from parameterized import parameterized, parameterized_class
+from parameterized import parameterized, parameterized_class, TestCase
 from unittest.mock import patch, Mock, PropertyMock
 from typing import (
     List,
@@ -15,7 +15,6 @@ from typing import (
 )
 import functools
 from fixtures import org_payload, repos_payload, expected_repos, apache2_repos
-
 
 def access_nested_map(nested_map: Mapping, path: Sequence) -> Any:
     """Access nested map with key path."""
@@ -221,21 +220,19 @@ class TestGithubOrgClient(unittest.TestCase):
         """
         self.assertEqual(GithubOrgClient.has_license(
             repo, license_key), expected_result)
-
-
-class TestIntegrationGithubOrgClient(unittest.TestCase):
+@parameterized_class([
+    {
+        "org_payload": org_payload,
+        "repos_payload": repos_payload,
+        "expected_repos": expected_repos,
+        "apache2_repos": apache2_repos,
+    }
+])
+class TestIntegrationGithubOrgClient(TestCase):
     """
     Performs integration tests for GithubOrgClient.public_repos.
     Mocks external requests using setUpClass and tearDownClass.
     """
-    @parameterized_class([
-        {
-            "org_payload": org_payload,
-            "repos_payload": repos_payload,
-            "expected_repos": expected_repos,
-            "apache2_repos": apache2_repos,
-        }
-    ])
     @classmethod
     def setUpClass(cls) -> None:
         """
