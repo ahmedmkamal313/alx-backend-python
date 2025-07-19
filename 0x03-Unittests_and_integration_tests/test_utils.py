@@ -4,8 +4,8 @@ Unit tests for the utils module.
 """
 import unittest
 from parameterized import parameterized
-from unittest.mock import patch, Mock 
-from utils import access_nested_map, get_json, memoize  
+from unittest.mock import patch, Mock
+from utils import access_nested_map, get_json, memoize
 
 
 class TestAccessNestedMap(unittest.TestCase):
@@ -63,10 +63,12 @@ class TestGetJson(unittest.TestCase):
         # Assert that the output of get_json is equal to test_payload
         self.assertEqual(result, test_payload)
 
+
 class TestMemoize(unittest.TestCase):
     """
     Tests the memoize decorator from the utils module.
     """
+
     def test_memoize(self) -> None:
         """
         Tests that when a method decorated with @memoize is called twice,
@@ -76,6 +78,7 @@ class TestMemoize(unittest.TestCase):
             """
             A test class to demonstrate memoization.
             """
+
             def a_method(self) -> int:
                 """
                 A simple method that returns 42.
@@ -90,8 +93,8 @@ class TestMemoize(unittest.TestCase):
                 return self.a_method()
 
         with patch.object(TestClass, 'a_method') as mock_a_method:
-            mock_a_method.return_value = 42 # Ensure the mocked method returns 42
-            
+            mock_a_method.return_value = 42  # Ensure the mocked method returns 42
+
             test_instance = TestClass()
 
             # Call a_property twice
