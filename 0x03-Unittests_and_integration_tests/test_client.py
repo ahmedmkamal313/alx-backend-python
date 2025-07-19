@@ -3,7 +3,7 @@
 Unit tests for the client module.
 """
 import unittest
-from parameterized import parameterized
+from parameterized import parameterized, parameterized_class
 from unittest.mock import patch, Mock, PropertyMock
 from typing import (
     List,
@@ -220,6 +220,99 @@ class TestGithubOrgClient(unittest.TestCase):
         """
         self.assertEqual(GithubOrgClient.has_license(
             repo, license_key), expected_result)
+
+
+@parameterized_class([
+    {
+        "org_payload": {
+            "login": "google",
+            "repos_url": "https://api.github.com/orgs/google/repos"
+        },
+        "repos_payload": [
+            {"name": "google-cloud-sdk", "license": {"key": "apache-2.0"}},
+            {"name": "angular", "license": {"key": "mit"}},
+            {"name": "some-other-repo", "license": None},
+        ],
+        "expected_repos": ["google-cloud-sdk", "angular", "some-other-repo"],
+        "apache2_repos": ["google-cloud-sdk"],
+    }
+])
+class TestIntegrationGithubOrgClient(unittest.TestCase):
+    """
+    Performs integration tests for GithubOrgClient.public_repos.
+    Mocks external requests using setUpClass and tearDownClass.
+    """
+    @classmethod
+    def setUpClass(cls) -> None:
+        """
+        Sets up class-level fixtures for integration tests.
+        Mocks requests.get to return example payloads found in the fixtures.
+        """
+        # Create a patcher for requests.get
+        cls.get_patcher = patch('requests.get')
+
+        # Start the patcher and store the mock object
+        cls.mock_get = cls.get_patcher.start()
+
+        # Define the side_effect for mock_get.return_value.json
+        # This function will be called when
+        # requests.get(url).json() is invoked.
+        def side_effect_func(url):
+            mock_response = Mock()
+            if url == GithubOrgClient.ORG_URL.format(org="google"):
+                mock_response.json.return_value = cls.org_payload
+            elif url == cls.org_payload["repos_url"]:
+                mock_response.json.return_value = cls.repos_payload
+            else:
+                # Handle unexpected URLs if necessary, or raise an error
+                raise ValueError(f"Unexpected URL in mock: {url}")
+            return mock_response
+
+        cls.mock_get.side_effect = side_effect_func
+
+    @classmethod
+    def tearDownClass(cls) -> None:
+        """
+        Stops the patcher after all integration tests have run.
+        """
+        cls.get_patcher.stop()
+
+    def test_public_repos(self) -> None:
+        """
+        Tests the public_repos method of GithubOrgClient
+        in an integration context.
+        Verifies that the method returns the expected list of repository names
+        and that get_json is called correctly.
+        """
+        # Instantiate the client with an org name that matches the fixture
+        client = GithubOrgClient("google")
+
+        # Test public_repos without a license filter
+        repos_no_filter = client.public_repos()
+        self.assertEqual(repos_no_filter, self.expected_repos)
+
+        # Test public_repos with an Apache-2.0 license filter
+        repos_apache2 = client.public_repos(license="apache-2.0")
+        self.assertEqual(repos_apache2, self.apache2_repos)
+
+        # Verify that get_json was called exactly
+        # twice in total for this test class:
+        # 1. Once for client.org
+        # 2. Once for client.repos_payload
+        # The memoize decorator ensure these are only called once per instance
+        # We need to check the calls made to the *actual* mock_get.
+        # Since client.org and client.repos_payload are
+        # memoized, get_json is called
+        # once for each of them *per instance of GithubOrgClient*.
+        # The total calls to mock_get should be 2 for this test method.
+        calls = [
+            unittest.mock.call(self.org_payload["repos_url"].replace(
+                "/repos", "")),  # Call for org()
+            # Call for repos_payload()
+            unittest.mock.call(self.org_payload["repos_url"])
+        ]
+        self.mock_get.assert_has_calls(calls, any_order=True)
+        self.assertEqual(self.mock_get.call_count, 2)
 
 
 if __name__ == '__main__':
