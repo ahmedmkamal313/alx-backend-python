@@ -4,7 +4,7 @@ Unit tests for the client module.
 """
 import unittest
 from parameterized import parameterized
-from unittest.mock import patch, Mock, PropertyMock  # Import PropertyMock
+from unittest.mock import patch, Mock, PropertyMock
 from typing import (
     List,
     Dict,
@@ -14,14 +14,6 @@ from typing import (
     Sequence,
 )
 import functools  # Added import for functools
-
-# Re-define utils functions here or ensure they are importable
-# For the purpose of this self-contained test file, let's include them
-# as they are needed by GithubOrgClient.
-# In a real project, these would be imported from a 'utils' module.
-
-# Copied from utils.py for self-containment as per common testing patterns
-# where dependencies are sometimes inlined or explicitly provided for tests.
 
 
 def access_nested_map(nested_map: Mapping, path: Sequence) -> Any:
@@ -212,6 +204,23 @@ class TestGithubOrgClient(unittest.TestCase):
             # 3. Test that the mocked get_json was called once
             # It should be called with the URL returned by _public_repos_url
             mock_get_json.assert_called_once_with(test_public_repos_url)
+
+    @parameterized.expand([
+        ({"license": {"key": "my_license"}}, "my_license", True),
+        ({"license": {"key": "other_license"}}, "my_license", False),
+        # Added test case for missing 'key'
+        ({"license": None}, "my_license", False),
+        ({}, "my_license", False),  # Added test case for missing 'license'
+    ])
+    def test_has_license(
+            self, repo: Dict[str, Dict],
+            license_key: str, expected_result: bool) -> None:
+        """
+        Tests that GithubOrgClient.has_license returns the expected boolean
+        value based on the provided repository dictionary and license key.
+        """
+        self.assertEqual(GithubOrgClient.has_license(
+            repo, license_key), expected_result)
 
 
 if __name__ == '__main__':
