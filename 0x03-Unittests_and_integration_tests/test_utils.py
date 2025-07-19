@@ -4,8 +4,8 @@ Unit tests for the utils module.
 """
 import unittest
 from parameterized import parameterized
-from unittest.mock import patch, Mock  # Import patch and Mock
-from utils import access_nested_map, get_json  # Import get_json
+from unittest.mock import patch, Mock 
+from utils import access_nested_map, get_json, memoize  
 
 
 class TestAccessNestedMap(unittest.TestCase):
@@ -62,6 +62,48 @@ class TestGetJson(unittest.TestCase):
 
         # Assert that the output of get_json is equal to test_payload
         self.assertEqual(result, test_payload)
+
+class TestMemoize(unittest.TestCase):
+    """
+    Tests the memoize decorator from the utils module.
+    """
+    def test_memoize(self) -> None:
+        """
+        Tests that when a method decorated with @memoize is called twice,
+        the underlying method is only called once.
+        """
+        class TestClass:
+            """
+            A test class to demonstrate memoization.
+            """
+            def a_method(self) -> int:
+                """
+                A simple method that returns 42.
+                """
+                return 42
+
+            @memoize
+            def a_property(self) -> int:
+                """
+                A property that calls a_method and is memoized.
+                """
+                return self.a_method()
+
+        with patch.object(TestClass, 'a_method') as mock_a_method:
+            mock_a_method.return_value = 42 # Ensure the mocked method returns 42
+            
+            test_instance = TestClass()
+
+            # Call a_property twice
+            result1 = test_instance.a_property
+            result2 = test_instance.a_property
+
+            # Test that a_method was called exactly once
+            mock_a_method.assert_called_once()
+
+            # Test that the correct result is returned
+            self.assertEqual(result1, 42)
+            self.assertEqual(result2, 42)
 
 
 if __name__ == '__main__':
