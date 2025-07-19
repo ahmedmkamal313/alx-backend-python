@@ -14,7 +14,7 @@ from typing import (
     Sequence,
 )
 import functools
-from fixtures import org_payload, repos_payload, expected_repos, apache2_repos
+
 
 def access_nested_map(nested_map: Mapping, path: Sequence) -> Any:
     """Access nested map with key path."""
