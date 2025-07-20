@@ -15,8 +15,6 @@ class UserSerializer(serializers.ModelSerializer):
         ]
         # These are set automatically
         read_only_fields = ['user_id', 'created_at']
-        # Optionally, exclude password_hash if you don't want it exposed
-        # extra_kwargs = {'password': {'write_only': True}} # If you were handling password creation/update here
 
 
 class MessageSerializer(serializers.ModelSerializer):
@@ -37,6 +35,15 @@ class MessageSerializer(serializers.ModelSerializer):
         # The 'conversation' field is a ForeignKey, so it will typically
         # be represented by its PK (UUID) when writing/reading.
 
+    def validate_message_body(self, value):
+        """
+        Custom validation to ensure message_body is not empty or just whitespace.
+        This introduces serializers.ValidationError.
+        """
+        if not value or not value.strip():
+            raise serializers.ValidationError("Message body cannot be empty.")
+        return value
+
 
 class ConversationSerializer(serializers.ModelSerializer):
     """
@@ -52,9 +59,20 @@ class ConversationSerializer(serializers.ModelSerializer):
     # 'messages' is the related_name defined in the Message model's ForeignKey to Conversation
     messages = MessageSerializer(many=True, read_only=True)
 
+    # Add a custom field to display participant usernames as a comma-separated string.
+    # This introduces serializers.SerializerMethodField and implicitly uses CharField for its output.
+    participants_display = serializers.SerializerMethodField()
+
     class Meta:
         model = Conversation
         fields = [
-            'conversation_id', 'participants', 'messages', 'created_at'
+            'conversation_id', 'participants', 'messages', 'created_at',
+            'participants_display'  # Include the new custom field
         ]
         read_only_fields = ['conversation_id', 'created_at']
+
+    def get_participants_display(self, obj):
+        """
+        Returns a comma-separated string of participant usernames for display.
+        """
+        return ", ".join([p.username for p in obj.participants.all()])
