@@ -61,7 +61,7 @@ This project demonstrates how to enhance Python database code using **custom dec
 
 ---
 
-#### 🔁 Highlight: Context Managers & Async Operations
+## 🔁 Highlight: Context Managers & Async Operations
 
 📁 [`python-context-async-operations-0x02`](./python-context-async-operations-0x02)
 
