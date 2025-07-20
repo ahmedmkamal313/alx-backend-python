@@ -17,7 +17,8 @@ alx-backend-python/
 │
 ├── python-generators-0x00/           # MySQL data streaming & batching with generators
 ├── python-decorators-0x01/           # SQL decorators: logging, retries, caching, and connection handling
-├── python-context-async-perations-0x02/
+├── python-context-async-operations-0x02/    # Async DB ops & context managers (SQLite + aiosqlite)
+├── python-test_utils-0x03/                  # Unit testing utils: parameterized, mocking, memoization
 |
 └── README.md                         # You're here
 ```
@@ -74,6 +75,22 @@ This project focuses on building **custom context managers** for resource-safe S
 - ✅ Parallel DB queries with `asyncio.gather()`
 
 > 📘 Full Details: [`python-context-async-operations-0x02/README.md`](./python-context-async-operations-0x02/README.md)
+
+---
+
+## 🧪 Highlight: Test Utilities
+📁 [`python-test_utils-0x03`](./python-test_utils-0x03)
+
+This module focuses on **unit testing utilities**, showcasing how to test nested data access, mock external APIs, and memoized functions using `unittest`, `parameterized`, and `unittest.mock`.
+
+### 🔍 Features
+- ✅ `access_nested_map`: Safely fetch values from nested dictionaries
+- ✅ `get_json`: Make HTTP requests and test via mocks
+- ✅ `memoize`: Decorator with test for caching results
+- ✅ Covers both success cases and exception handling
+- ✅ Uses `@parameterized.expand` and `patch.object effectively`
+
+> 📘 Full Details: [`python-test_utils-0x03/README.md`](./python-test_utils-0x03/README.md)
 
 ---
 ## 📚 Prerequisites
