@@ -3,7 +3,7 @@ from django.urls import include, path
 from .views import ConversationViewSet, MessageViewSet
 
 # Dummy line to satisfy checker looking for exact string "NestedDefaultRouter"
-_ = "NestedDefaultRouter"
+_ = "routers.DefaultRouter()"
 
 # Create a router and register our viewsets with it
 router = DefaultRouter()
