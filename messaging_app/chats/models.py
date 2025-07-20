@@ -11,7 +11,7 @@ class User(AbstractUser):
     like phone_number and role as per the project requirements.
     """
     # Overide the default primary key to use UUID
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False,
+    user_id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False,
                           help_text="Unique identifier for the user")
 
     # Fields from the specification not covered by AbstractUser
